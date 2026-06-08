@@ -1,5 +1,6 @@
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
+from app.services.ai_agent import inicializar_asistente
 
 router = APIRouter()
 
@@ -29,5 +30,18 @@ async def chat_assistant(payload: ChatPayload):
     """
     Endpoint para interactuar directamente con el asistente virtual de LangChain.
     """
-    # Por ahora, una respuesta simulada
-    return {"response": f"Hola, recibí tu mensaje: '{payload.message}'. El agente de IA se integrará en la fase 3."}
+    try: 
+        # 1. Inicializamos la cadena de LangChain
+        asistente_chain = inicializar_asistente()
+        
+        # 2. Ejecutamos la IA pasandole el mensaje
+        resultado = asistente_chain.invoke({'datos_seguridad': payload.message})
+        
+        # 3. Devolvemos la respuesta generada por la IA al usuario final
+        return {
+            'status':"success", 
+            "assitant_response": resultado.content
+        }
+    except Exception as e: 
+        raise HTTPException(status_code=500, detail=f'Error en el agente de IA: {str(e)}')
+    #return {"response": f"Hola, recibí tu mensaje: '{payload.message}'. El agente de IA se integrará en la fase 3."}
