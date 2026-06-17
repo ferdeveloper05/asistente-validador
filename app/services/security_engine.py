@@ -13,9 +13,7 @@ class ReporteSeguridad(BaseModel):
 # 2. El motor con los casos de prueba para desarrollo (Mock)
 def escanear_url_mock(url: str) -> dict:
     """
-    Simula el análisis de seguridad de una URL. 
-    Tu compañero junior modificará el interior de esta función más adelante 
-    para consultar APIs reales de ciberseguridad.
+    Simula el análisis de seguridad de una URL.
     """
     # Limpiamos un poco la entrada por si acaso
     url_limpia = url.lower().replace("https://", "").replace("http://", "").split("/")[0]
